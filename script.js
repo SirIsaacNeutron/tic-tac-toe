@@ -95,7 +95,7 @@ function gameboardFactory(playersArray) {
 
     function createBoard() {
         const newBoard = []
-        for (let i = 0; i < 2; ++i) {
+        for (let i = 0; i < 3; ++i) {
             const newRow = [EMPTY_SPACE, EMPTY_SPACE, EMPTY_SPACE]
             newBoard.push(newRow)
         }
@@ -133,8 +133,8 @@ function gameboardFactory(playersArray) {
     }
 
     function isGameTied() {
-        for (let i = 0; i < 2; ++i) {
-            const currentRow = board[0]
+        for (let i = 0; i < 3; ++i) {
+            const currentRow = board[i]
             if (currentRow.includes(EMPTY_SPACE)) {
                 return false
             }

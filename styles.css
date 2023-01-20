@@ -38,6 +38,29 @@ main {
     flex-direction: column;
 }
 
+.form-section h2 {
+    font-weight: 300;
+}
+
+.x-rule-text {
+    margin-top: 5px;
+    margin-bottom: 15px;
+
+    border-bottom: 1px solid white;
+    padding-bottom: 10px;
+}
+
+.name-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.name-form input {
+    outline: none;
+}
+
 footer {
     display: flex;
     align-items: center;

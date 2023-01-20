@@ -8,6 +8,7 @@
         <script src="https://kit.fontawesome.com/cffa455509.js" crossorigin="anonymous"></script>
 
         <link rel="stylesheet" href="styles.css" />
+        <script src="script.js" defer></script>
     </head>
     <body>
         <header>
@@ -16,10 +17,20 @@
         <main>
             <div class="form-section">
                 <h2>Welcome!</h2>
-                <p>In this version of Tic-tac-toe, X goes first.</p>
+                <p class="x-rule-text">In this version of Tic-tac-toe, X goes first.</p>
                 <div class="buttons-section">
                     <button>AI</button>
-                    <button>Two Players</button>
+                    <button class="two-players-btn">Two Players</button>
+
+                    <!-- <form method="POST">
+                        <label for="xPlayerInput">X player's name:</label>
+                        <input type="text" name="xPlayerName" id="xPlayerInput">
+        
+                        <label for="oPlayerInput">O player's name</label>
+                        <input type="text" name="oPlayerName" id="oPlayerInput">
+        
+                        <button type="submit">Start Game</button>
+                    </form> -->
                 </div>
             </div>
         </main>

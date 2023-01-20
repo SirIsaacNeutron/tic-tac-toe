@@ -134,7 +134,7 @@ function gameboardFactory(playersArray) {
 
     function isGameTied() {
         for (let i = 0; i < 3; ++i) {
-            const currentRow = board[0]
+            const currentRow = board[i]
             if (currentRow.includes(EMPTY_SPACE)) {
                 return false
             }

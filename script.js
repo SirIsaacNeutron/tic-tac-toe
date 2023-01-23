@@ -78,6 +78,7 @@ function handleSubmission(e) {
     
     const player1Area = document.createElement("div")
     player1Area.classList.add("player-name")
+    player1Area.classList.add("current-player")
     player1Area.textContent = player1.getName()
 
     const player2Area = document.createElement("div")
@@ -114,6 +115,18 @@ function handleSubmission(e) {
             }
 
             newCell.addEventListener("click", () => {
+                const currentPlayer = gameboard.getCurrentPlayer() 
+                
+                // If X just made their move
+                if (currentPlayer.getMarker() === player1.getMarker()) {
+                    player1Area.classList.remove("current-player")
+                    player2Area.classList.add("current-player")
+                }
+                else {
+                    player2Area.classList.remove("current-player")
+                    player1Area.classList.add("current-player")
+                }
+
                 gameboard.makeMove(i, j)
 
                 console.log({ board: gameboard.getBoard() })
@@ -170,6 +183,10 @@ function gameboardFactory(playersArray) {
         return board
     }
 
+    function getCurrentPlayer() {
+        return currentPlayer
+    }
+
     function hasGameBeenWon() {
         if (board[0][0] === board[0][1] && board[0][1] === board[0][2]) { return true }
         if (board[0][0] === board[1][1] && board[1][1] === board[2][2]) { return true }
@@ -210,5 +227,5 @@ function gameboardFactory(playersArray) {
         return true
     }
 
-    return { getBoard, hasGameBeenWon, makeMove, isCellOccupied, getCellContent, isGameTied }
+    return { getBoard, getCurrentPlayer, hasGameBeenWon, makeMove, isCellOccupied, getCellContent, isGameTied }
 }

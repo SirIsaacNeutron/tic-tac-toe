@@ -8,6 +8,7 @@
         "prettier/prettier": "off",
         "no-unused-vars": "warn",
         "no-use-before-define": "off",
-        "no-plusplus": "off"
+        "no-plusplus": "off",
+        "no-loop-func": "off"
     }
 }

@@ -78,6 +78,11 @@ main {
     font-size: 2rem;
 
     padding: 20px 30px;
+    transition: all 0.3s ease-in-out;
+}
+
+.current-player {
+    background-color: #9e4141;
 }
 
 .game-section {

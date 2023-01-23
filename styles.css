@@ -61,6 +61,17 @@ main {
     outline: none;
 }
 
+.play-again-btn {
+    transform: scale(0);
+    transition: all 0.3s ease-in-out;
+
+    padding: 10px 20px;
+}
+
+.show-btn {
+    transform: scale(1)
+}
+
 .player-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -116,6 +127,7 @@ main {
 
 .game-cell:hover {
     background-color: #5e5e5e;
+    cursor: pointer;
 }
 
 .no-top-border {

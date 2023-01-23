@@ -62,16 +62,30 @@ function handleSubmission(e) {
     player1 = playerFactory(player1Name, "X")
     player2 = playerFactory(player2Name, "O")
 
-    gameboard = gameboardFactory([player1, player2])
-
     // const gameSection = document.querySelector(".form-section")
     // gameSection.classList.remove("form-section")
     // gameSection.classList.add("game-section")
     // gameSection.replaceChildren()
 
+    createTicTacToeBoard(player1, player2)
+}
+
+function createTicTacToeBoard(playerOne, playerTwo) {
+    gameboard = gameboardFactory([playerOne, playerTwo])
+
     const main = document.querySelector("main")
     main.classList.add("game-section")
     main.replaceChildren()
+
+    const restartGameButton = document.createElement("button")
+    restartGameButton.textContent = "Play Again"
+    restartGameButton.classList.add("play-again-btn")
+
+    restartGameButton.addEventListener("click", () => {
+        createTicTacToeBoard(playerOne, playerTwo)
+    })
+
+    main.appendChild(restartGameButton)
 
     const playerArea = document.createElement("div")
     playerArea.classList.add("player-section")
@@ -129,6 +143,7 @@ function handleSubmission(e) {
                     else {
                         player2Area.classList.add("victorious-player")
                     }
+                    restartGameButton.classList.add("show-btn")
                 }
                 else {
                     // If X just made their move, show that O is the current player
@@ -199,10 +214,28 @@ function gameboardFactory(playersArray) {
     }
 
     function hasGameBeenWon() {
+        // top row
         if (board[0][0] !== EMPTY_SPACE && board[0][0] === board[0][1] && board[0][1] === board[0][2]) { return true }
+
+        // top left to bottom right diagonal
         if (board[0][0] !== EMPTY_SPACE && board[0][0] === board[1][1] && board[1][1] === board[2][2]) { return true }
+
+        // leftmost column
         if (board[0][0] !== EMPTY_SPACE && board[0][0] === board[1][0] && board[1][0] === board[2][0]) { return true }
+
+        // top right to bottom left diagonal
+        if (board[0][2] !== EMPTY_SPACE && board[0][2] === board[1][1] && board[1][1] === board[2][0]) { return true }
+
+        // rightmost column
         if (board[0][2] !== EMPTY_SPACE && board[0][2] === board[1][2] && board[1][2] === board[2][2]) { return true }
+
+        // middle row
+        if (board[1][0] !== EMPTY_SPACE && board[1][0] === board[1][1] && board[1][1] === board[1][2]) { return true }
+
+        // middle column
+        if (board[0][1] !== EMPTY_SPACE && board[0][1] === board[1][1] && board[1][1] === board[2][1]) { return true }
+
+        // bottom row
         if (board[2][0] !== EMPTY_SPACE && board[2][0] === board[2][1] && board[2][1] === board[2][2]) { return true }
         return false
     }

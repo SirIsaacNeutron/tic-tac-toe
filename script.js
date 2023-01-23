@@ -97,6 +97,15 @@ function handleSubmission(e) {
                 newCell.classList.add("no-right-border")
             }
 
+            newCell.addEventListener("click", () => {
+                gameboard.makeMove(i, j)
+
+                console.log({ board: gameboard.getBoard() })
+
+                newCell.textContent = gameboard.getCellContent(i, j)
+                
+            })
+
             ticTacToeBoard.appendChild(newCell)
         }
     }
@@ -171,6 +180,10 @@ function gameboardFactory(playersArray) {
         return board[row][col] !== EMPTY_SPACE
     }
 
+    function getCellContent(row, col) {
+        return board[row][col]
+    }
+
     function isGameTied() {
         for (let i = 0; i < 3; ++i) {
             const currentRow = board[i]
@@ -181,5 +194,5 @@ function gameboardFactory(playersArray) {
         return true
     }
 
-    return { getBoard, hasGameBeenWon, makeMove, isCellOccupied, isGameTied }
+    return { getBoard, hasGameBeenWon, makeMove, isCellOccupied, getCellContent, isGameTied }
 }

@@ -63,6 +63,45 @@ function handleSubmission(e) {
     player2 = playerFactory(player2Name, "O")
 
     gameboard = gameboardFactory([player1, player2])
+
+    // const gameSection = document.querySelector(".form-section")
+    // gameSection.classList.remove("form-section")
+    // gameSection.classList.add("game-section")
+    // gameSection.replaceChildren()
+
+    const main = document.querySelector("main")
+    main.classList.add("game-section")
+    main.replaceChildren()
+
+    const ticTacToeBoard = document.createElement("div")
+    ticTacToeBoard.classList.add("tic-tac-toe-board")
+    for (let i = 0; i < 3; ++i) {
+        for (let j = 0; j < 3; ++j) {
+            const newCell = document.createElement("div")
+            newCell.classList.add("game-cell")
+            newCell.classList.add(`${i}-${j}`)
+
+            if (i === 0) {
+                newCell.classList.add("no-top-border")
+            }
+
+            if (j === 0) {
+                newCell.classList.add("no-left-border")
+            }
+
+            if (i === 2) {
+                newCell.classList.add("no-bottom-border")
+            }
+
+            if (j === 2) {
+                newCell.classList.add("no-right-border")
+            }
+
+            ticTacToeBoard.appendChild(newCell)
+        }
+    }
+
+    main.appendChild(ticTacToeBoard)
 }
 
 function playerFactory(playerName, playerMarker) {

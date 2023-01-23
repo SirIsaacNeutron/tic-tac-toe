@@ -61,6 +61,45 @@ main {
     outline: none;
 }
 
+.game-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tic-tac-toe-board {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+
+    min-width: 300px;
+    min-height: 300px;
+}
+
+.game-cell {
+    border: 1px solid var(--font-color);
+}
+
+.game-cell:hover {
+    background-color: #5e5e5e;
+}
+
+.no-top-border {
+    border-top: none;
+}
+
+.no-left-border {
+    border-left: none;
+}
+
+.no-right-border {
+    border-right: none;
+}
+
+.no-bottom-border {
+    border-bottom: none;
+}
+
 footer {
     display: flex;
     align-items: center;

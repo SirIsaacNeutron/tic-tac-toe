@@ -159,6 +159,12 @@ function createTicTacToeBoard(playerOne, playerTwo) {
                 }
 
                 newCell.textContent = gameboard.getCellContent(i, j)
+
+                if (gameboard.isGameTied()) {
+                    restartGameButton.classList.add("show-btn")
+                    player1Area.classList.remove("current-player")
+                    player2Area.classList.remove("current-player")
+                }
             })
 
             ticTacToeBoard.appendChild(newCell)

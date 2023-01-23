@@ -73,6 +73,22 @@ function handleSubmission(e) {
     main.classList.add("game-section")
     main.replaceChildren()
 
+    const playerArea = document.createElement("div")
+    playerArea.classList.add("player-section")
+    
+    const player1Area = document.createElement("div")
+    player1Area.classList.add("player-name")
+    player1Area.textContent = player1.getName()
+
+    const player2Area = document.createElement("div")
+    player2Area.classList.add("player-name")
+    player2Area.textContent = player2.getName()
+
+    playerArea.appendChild(player1Area)
+    playerArea.appendChild(player2Area)
+
+    main.appendChild(playerArea)
+
     const ticTacToeBoard = document.createElement("div")
     ticTacToeBoard.classList.add("tic-tac-toe-board")
     for (let i = 0; i < 3; ++i) {

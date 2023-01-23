@@ -115,24 +115,35 @@ function handleSubmission(e) {
             }
 
             newCell.addEventListener("click", () => {
+                // Do nothing if occupied cell is chosen or game is over
+                if (gameboard.isCellOccupied(i, j) || gameboard.hasGameBeenWon()) { return }
+
                 const currentPlayer = gameboard.getCurrentPlayer() 
-                
-                // If X just made their move
-                if (currentPlayer.getMarker() === player1.getMarker()) {
-                    player1Area.classList.remove("current-player")
-                    player2Area.classList.add("current-player")
-                }
-                else {
-                    player2Area.classList.remove("current-player")
-                    player1Area.classList.add("current-player")
-                }
 
                 gameboard.makeMove(i, j)
 
-                console.log({ board: gameboard.getBoard() })
+                if (gameboard.hasGameBeenWon()) {
+                    if (currentPlayer.getMarker() === player1.getMarker()) {
+                        player1Area.classList.add("victorious-player")
+                    }
+                    else {
+                        player2Area.classList.add("victorious-player")
+                    }
+                }
+                else {
+                    // If X just made their move, show that O is the current player
+                    if (currentPlayer.getMarker() === player1.getMarker()) {
+                        player1Area.classList.remove("current-player")
+                        player2Area.classList.add("current-player")
+                    }
+                    // and vice-versa
+                    else {
+                        player2Area.classList.remove("current-player")
+                        player1Area.classList.add("current-player")
+                    }
+                }
 
                 newCell.textContent = gameboard.getCellContent(i, j)
-                
             })
 
             ticTacToeBoard.appendChild(newCell)
@@ -188,11 +199,11 @@ function gameboardFactory(playersArray) {
     }
 
     function hasGameBeenWon() {
-        if (board[0][0] === board[0][1] && board[0][1] === board[0][2]) { return true }
-        if (board[0][0] === board[1][1] && board[1][1] === board[2][2]) { return true }
-        if (board[0][0] === board[1][0] && board[1][0] === board[2][0]) { return true }
-        if (board[0][2] === board[1][2] && board[1][2] === board[2][2]) { return true }
-        if (board[2][0] === board[2][1] && board[2][1] === board[2][2]) { return true }
+        if (board[0][0] !== EMPTY_SPACE && board[0][0] === board[0][1] && board[0][1] === board[0][2]) { return true }
+        if (board[0][0] !== EMPTY_SPACE && board[0][0] === board[1][1] && board[1][1] === board[2][2]) { return true }
+        if (board[0][0] !== EMPTY_SPACE && board[0][0] === board[1][0] && board[1][0] === board[2][0]) { return true }
+        if (board[0][2] !== EMPTY_SPACE && board[0][2] === board[1][2] && board[1][2] === board[2][2]) { return true }
+        if (board[2][0] !== EMPTY_SPACE && board[2][0] === board[2][1] && board[2][1] === board[2][2]) { return true }
         return false
     }
 

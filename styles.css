@@ -85,6 +85,10 @@ main {
     background-color: #9e4141;
 }
 
+.victorious-player {
+    background-color: #346b34;
+}
+
 .game-section {
     display: flex;
     flex-direction: column;

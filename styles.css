@@ -98,7 +98,7 @@ main {
     display: grid;
     grid-template-columns: 1fr 1fr;
 
-    gap: 200px;
+    gap: 100px;
     margin-bottom: 20px;
 }
 
@@ -112,6 +112,8 @@ main {
 
     padding: 20px 30px;
     transition: all 0.3s ease-in-out;
+
+    border-radius: 15px;
 }
 
 .current-player {
@@ -134,8 +136,15 @@ main {
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
 
-    min-width: 400px;
-    min-height: 400px;
+    /* min-width: 400px;
+    min-height: 400px; */
+
+    max-width: 400px;
+    max-height: 400px;
+    
+    /* See https://stackoverflow.com/questions/43705866/max-width-not-working-on-flex-item */
+    width: 100%;
+    height: 100%;
 }
 
 .game-cell {
@@ -195,4 +204,14 @@ footer {
 
 .favicon-link {
     color: var(--font-color);
+}
+
+@media (max-width: 500px) {
+    .player-name {
+        font-size: 1.5rem;
+    }
+
+    .player-section {
+        gap: 50px;
+    }
 }

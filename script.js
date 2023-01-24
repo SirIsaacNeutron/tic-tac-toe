@@ -18,9 +18,13 @@ function createAiForm() {
     buttonsSection.classList.remove("buttons-section")
     buttonsSection.classList.add("ai-section")
 
-    const information = document.createElement("p")
-    information.textContent = "Choose the symbol the human player (you) will be playing. The AI will play as the opposite."
-    buttonsSection.appendChild(information)
+    const userInformation = document.createElement("p")
+    userInformation.textContent = "Choose the symbol the human player (you) will be playing. The AI will play as the opposite."
+    buttonsSection.appendChild(userInformation)
+
+    const aiInformation = document.createElement("p")
+    aiInformation.textContent = "The AI might make seemingly strange moves. When that happens, think about why those moves are being made :)"
+    buttonsSection.appendChild(aiInformation)
 
     const aiButtonsSection = document.createElement("div")
     aiButtonsSection.classList.add("ai-btns-section")
@@ -408,6 +412,18 @@ function aiFactory(aiMarker) {
         return evaluatedMove
     }
 
+    /** Taken from https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
+     * Shuffles array in place. ES6 version
+     * @param {Array} a items An array containing the items.
+     */
+    function shuffle(a) {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
     // minimax algorithm: https://en.wikipedia.org/wiki/Minimax#Pseudocode 
     function minimax(gameboardState, depth, isX, isInitialCall) {
 
@@ -424,6 +440,12 @@ function aiFactory(aiMarker) {
         }
 
         const allMoves = gameboardState.getAllPossibleMoves()
+        // allMoves is in order ([0, 0], [0, 1], ...) and the AI is indfifferent to moves of
+        // equal value
+        // So it will always choose the earliest index in allMoves... unless we shuffle it
+        if (isInitialCall) {
+            shuffle(allMoves)
+        }
 
         if (isX) {
             let value = -100

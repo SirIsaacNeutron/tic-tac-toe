@@ -10,6 +10,7 @@
         "no-use-before-define": "off",
         "no-plusplus": "off",
         "no-loop-func": "off",
-        "no-lonely-if": "off"
+        "no-lonely-if": "off",
+        "no-param-reassign": "off"
     }
 }

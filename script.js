@@ -319,23 +319,35 @@ function gameboardFactory(playersArray, currentPlayer_ = playersArray[0]) {
         return true
     }
 
-    return { getWinnerMarker, setBoard, getBoard, getCopy, getCurrentPlayer, hasGameBeenWon, makeMove, isCellOccupied, getCellContent, isGameTied }
+    return { getWinnerMarker, getAllPossibleMoves, setBoard, getBoard, getCopy, getCurrentPlayer, hasGameBeenWon, makeMove, isCellOccupied, getCellContent, isGameTied }
 }
 
 function aiFactory(aiMarker) {
     const aiPlayer = playerFactory("AI", aiMarker)
 
-    function makeMove(depth, isX) {
+    let evaluatedMove = null
 
+    function getMove() {
+        const gameboardCopy = gameboard.getCopy()
+
+        console.log(gameboardCopy.getBoard())
+
+        if (aiMarker === "X") {
+            minimax(gameboardCopy, 4, true)
+        }
+        else {
+            minimax(gameboardCopy, 4, false)
+        }
+
+        return evaluatedMove
     }
 
     // minimax algorithm: https://en.wikipedia.org/wiki/Minimax#Pseudocode 
-    function minimax([row, col], depth, isX) {
-        const gameboardCopy = gameboard.getCopy()
+    function minimax(gameboardState, depth, isX) {
 
         if (depth === 0) {
-            if (gameboardCopy.hasGameBeenWon()) {
-                const winnerMarker = gameboardCopy.getWinnerMarker()
+            if (gameboardState.hasGameBeenWon()) {
+                const winnerMarker = gameboardState.getWinnerMarker()
                 // X is the maximizing player
                 if (winnerMarker === "X") {
                     return 1
@@ -345,27 +357,44 @@ function aiFactory(aiMarker) {
             return 0
         }
 
-        const allMoves = gameboardCopy.getAllPossibleMoves()
+        const allMoves = gameboardState.getAllPossibleMoves()
 
         if (isX) {
             let value = -100
             for (let i = 0; i < allMoves.length; ++i) {
-                const { potentialRow, potentialCol } = allMoves[i]
+                const potentialRow = allMoves[i][0]
+                const potentialCol = allMoves[i][1]
 
-                value = Math.max(value, minimax([potentialRow, potentialCol], depth - 1, false))
+                const gameboardStateCopy = gameboardState.getCopy()
+                gameboardStateCopy.makeMove(potentialRow, potentialCol)
+
+                const result = minimax(gameboardStateCopy, depth - 1, false)
+
+                if (value < result) {
+                    value = result
+                    evaluatedMove = [potentialRow, potentialCol]
+                }
             }
             return value
         }
         // if O
         let value = 100
         for (let i = 0; i < allMoves.length; ++i) {
-            const { potentialRow, potentialCol } = allMoves[i]
+            const potentialRow = allMoves[i][0]
+            const potentialCol = allMoves[i][1]
 
-            value = Math.min(value, minimax([potentialRow, potentialCol], depth - 1, true))
+            const gameboardStateCopy = gameboardState.getCopy()
+            gameboardStateCopy.makeMove(potentialRow, potentialCol)
+
+            const result = minimax(gameboardStateCopy, depth - 1, true)
+            if (value > result) {
+                value = result
+                evaluatedMove = [potentialRow, potentialCol]
+            }
         }
         return value
 
     }
 
-    return { ...aiPlayer, }
+    return { ...aiPlayer, getMove }
 }

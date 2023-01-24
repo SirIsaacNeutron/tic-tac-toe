@@ -27,13 +27,32 @@ function createAiForm() {
 
     const humanPlayAsX = document.createElement("button")
     humanPlayAsX.textContent = "X"
+    humanPlayAsX.addEventListener("click", () => {
+        handleAiForm("X")
+    })
     aiButtonsSection.appendChild(humanPlayAsX)
 
     const humanPlayAsO = document.createElement("button")
     humanPlayAsO.textContent = "O"
+    humanPlayAsO.addEventListener("click", () => {
+        handleAiForm("O")
+    })
     aiButtonsSection.appendChild(humanPlayAsO)
 
     buttonsSection.appendChild(aiButtonsSection)
+}
+
+function handleAiForm(humanMarker) {
+    if (humanMarker === "X") {
+        player1 = playerFactory("Human", humanMarker)
+        player2 = aiFactory("O")
+    }
+    else {
+        player1 = aiFactory("X")
+        player2 = playerFactory("Human", humanMarker)
+    }
+
+    createTicTacToeBoard(player1, player2, true)
 }
 
 function createPlayerNamesForm() {
@@ -95,10 +114,10 @@ function handleSubmission(e) {
     // gameSection.classList.add("game-section")
     // gameSection.replaceChildren()
 
-    createTicTacToeBoard(player1, player2)
+    createTicTacToeBoard(player1, player2, false)
 }
 
-function createTicTacToeBoard(playerOne, playerTwo) {
+function createTicTacToeBoard(playerOne, playerTwo, isAIPlaying) {
     gameboard = gameboardFactory([playerOne, playerTwo])
 
     const main = document.querySelector("main")
@@ -110,7 +129,7 @@ function createTicTacToeBoard(playerOne, playerTwo) {
     restartGameButton.classList.add("play-again-btn")
 
     restartGameButton.addEventListener("click", () => {
-        createTicTacToeBoard(playerOne, playerTwo)
+        createTicTacToeBoard(playerOne, playerTwo, isAIPlaying)
     })
 
     main.appendChild(restartGameButton)
@@ -138,7 +157,7 @@ function createTicTacToeBoard(playerOne, playerTwo) {
         for (let j = 0; j < 3; ++j) {
             const newCell = document.createElement("div")
             newCell.classList.add("game-cell")
-            newCell.classList.add(`${i}-${j}`)
+            newCell.classList.add(`row${i}-col${j}`)
 
             if (i === 0) {
                 newCell.classList.add("no-top-border")
@@ -160,12 +179,22 @@ function createTicTacToeBoard(playerOne, playerTwo) {
                 // Do nothing if occupied cell is chosen or game is over
                 if (gameboard.isCellOccupied(i, j) || gameboard.hasGameBeenWon()) { return }
 
-                const currentPlayer = gameboard.getCurrentPlayer() 
-
                 gameboard.makeMove(i, j)
 
+                if (isAIPlaying) {
+                    if (gameboard.getCurrentPlayer().getName() === "AI") {
+                        const aiMove = gameboard.getCurrentPlayer().getMove()
+                        const aiRow = aiMove[0]
+                        const aiCol = aiMove[1]
+
+                        const chosenCell = document.querySelector(`div.row${aiRow}-col${aiCol}`)
+                        gameboard.makeMove(aiRow, aiCol)
+                        chosenCell.textContent = gameboard.getCellContent(aiRow, aiCol)
+                    }
+                }
+
                 if (gameboard.hasGameBeenWon()) {
-                    if (currentPlayer.getMarker() === player1.getMarker()) {
+                    if (gameboard.getCurrentPlayer().getMarker() === player1.getMarker()) {
                         player1Area.classList.add("victorious-player")
                     }
                     else {
@@ -175,7 +204,7 @@ function createTicTacToeBoard(playerOne, playerTwo) {
                 }
                 else {
                     // If X just made their move, show that O is the current player
-                    if (currentPlayer.getMarker() === player1.getMarker()) {
+                    if (gameboard.getCurrentPlayer().getMarker() !== player1.getMarker()) {
                         player1Area.classList.remove("current-player")
                         player2Area.classList.add("current-player")
                     }

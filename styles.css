@@ -44,7 +44,12 @@ main {
 .ai-btns-section {
     margin-top: 10px;
     display: flex;
-    gap: 10px;
+    gap: 20px;
+}
+
+.ai-btns-section button {
+    font-size: 1.5rem;
+    padding: 10px 30px;
 }
 
 .form-section {

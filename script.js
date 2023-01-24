@@ -229,6 +229,15 @@ function createTicTacToeBoard(playerOne, playerTwo, isAIPlaying) {
     }
 
     main.appendChild(ticTacToeBoard)
+
+    if (gameboard.getCurrentPlayer().getName() === "AI") {
+        const aiMove = gameboard.getCurrentPlayer().getMove()
+        const aiRow = aiMove[0]
+        const aiCol = aiMove[1]
+
+        const chosenCell = document.querySelector(`div.row${aiRow}-col${aiCol}`)
+        chosenCell.click()
+    }
 }
 
 function playerFactory(playerName, playerMarker) {

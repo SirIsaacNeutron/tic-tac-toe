@@ -4,9 +4,37 @@ let player2 = null
 
 let gameboard = null
 
+const aiButton = document.querySelector(".ai-btn")
+
+aiButton.addEventListener("click", createAiForm)
+
 const twoPlayersButton = document.querySelector(".two-players-btn")
 
 twoPlayersButton.addEventListener("click", createPlayerNamesForm)
+
+function createAiForm() {
+    const buttonsSection = document.querySelector(".buttons-section")
+    buttonsSection.replaceChildren()
+    buttonsSection.classList.remove("buttons-section")
+    buttonsSection.classList.add("ai-section")
+
+    const information = document.createElement("p")
+    information.textContent = "Choose the symbol the human player (you) will be playing. The AI will play as the opposite."
+    buttonsSection.appendChild(information)
+
+    const aiButtonsSection = document.createElement("div")
+    aiButtonsSection.classList.add("ai-btns-section")
+
+    const humanPlayAsX = document.createElement("button")
+    humanPlayAsX.textContent = "X"
+    aiButtonsSection.appendChild(humanPlayAsX)
+
+    const humanPlayAsO = document.createElement("button")
+    humanPlayAsO.textContent = "O"
+    aiButtonsSection.appendChild(humanPlayAsO)
+
+    buttonsSection.appendChild(aiButtonsSection)
+}
 
 function createPlayerNamesForm() {
     const buttonsSection = document.querySelector(".buttons-section")
@@ -330,7 +358,7 @@ function aiFactory(aiMarker) {
     function getMove() {
         const gameboardCopy = gameboard.getCopy()
 
-        console.log(gameboardCopy.getBoard())
+        // console.log(gameboardCopy.getBoard())
 
         if (aiMarker === "X") {
             minimax(gameboardCopy, 4, true)

@@ -431,7 +431,8 @@ function aiFactory(aiMarker) {
                     value = result
                     if (isInitialCall) {
                         evaluatedMove = [potentialRow, potentialCol]
-                    }                }
+                    }               
+                }
             }
             return value
         }

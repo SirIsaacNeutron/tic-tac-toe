@@ -390,19 +390,19 @@ function aiFactory(aiMarker) {
         // console.log(gameboardCopy.getBoard())
 
         if (aiMarker === "X") {
-            minimax(gameboardCopy, 4, true)
+            minimax(gameboardCopy, 4, true, true)
         }
         else {
-            minimax(gameboardCopy, 4, false)
+            minimax(gameboardCopy, 4, false, true)
         }
 
         return evaluatedMove
     }
 
     // minimax algorithm: https://en.wikipedia.org/wiki/Minimax#Pseudocode 
-    function minimax(gameboardState, depth, isX) {
+    function minimax(gameboardState, depth, isX, isInitialCall) {
 
-        if (depth === 0) {
+        if (depth === 0 || gameboardState.hasGameBeenWon() || gameboardState.isGameTied()) {
             if (gameboardState.hasGameBeenWon()) {
                 const winnerMarker = gameboardState.getWinnerMarker()
                 // X is the maximizing player
@@ -425,12 +425,13 @@ function aiFactory(aiMarker) {
                 const gameboardStateCopy = gameboardState.getCopy()
                 gameboardStateCopy.makeMove(potentialRow, potentialCol)
 
-                const result = minimax(gameboardStateCopy, depth - 1, false)
+                const result = minimax(gameboardStateCopy, depth - 1, false, false)
 
-                if (value < result) {
+                if (result > value) {
                     value = result
-                    evaluatedMove = [potentialRow, potentialCol]
-                }
+                    if (isInitialCall) {
+                        evaluatedMove = [potentialRow, potentialCol]
+                    }                }
             }
             return value
         }
@@ -443,10 +444,12 @@ function aiFactory(aiMarker) {
             const gameboardStateCopy = gameboardState.getCopy()
             gameboardStateCopy.makeMove(potentialRow, potentialCol)
 
-            const result = minimax(gameboardStateCopy, depth - 1, true)
-            if (value > result) {
+            const result = minimax(gameboardStateCopy, depth - 1, true, false)
+            if (result < value) {
                 value = result
-                evaluatedMove = [potentialRow, potentialCol]
+                if (isInitialCall) {
+                    evaluatedMove = [potentialRow, potentialCol]
+                }
             }
         }
         return value

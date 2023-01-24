@@ -193,14 +193,14 @@ function playerFactory(playerName, playerMarker) {
     return { setName, getName, getMarker }
 }
 
-function gameboardFactory(playersArray) {
+function gameboardFactory(playersArray, currentPlayer_ = playersArray[0]) {
     const xPlayer = playersArray[0]
     const yPlayer = playersArray[1]
     
-    let currentPlayer = xPlayer
+    let currentPlayer = currentPlayer_
     const EMPTY_SPACE = ""
     
-    const board = createBoard()
+    let board = createBoard()
 
     function createBoard() {
         const newBoard = []
@@ -213,6 +213,29 @@ function gameboardFactory(playersArray) {
 
     function getBoard() {
         return board
+    }
+
+    function setBoard(newBoard) {
+        board = newBoard
+    }
+
+    function getCopy() {
+        // By passing in the currentPlayer of the object (instead of currentPlayer_),
+        // we can preserve the turn logic of makeMove
+        const gameboardCopy = gameboardFactory(playersArray, currentPlayer)
+
+        // Make a new version of the board separate from the old one
+        const boardCopy = []
+        for (let i = 0; i < 3; ++i) {
+            boardCopy.push([EMPTY_SPACE, EMPTY_SPACE, EMPTY_SPACE])
+            for (let j = 0; j < 3; ++j) {
+                boardCopy[i][j] = board[i][j]
+            }
+        }
+
+        gameboardCopy.setBoard(boardCopy)
+
+        return gameboardCopy
     }
 
     function getCurrentPlayer() {
@@ -250,6 +273,9 @@ function gameboardFactory(playersArray) {
         if (!isCellOccupied(row, col)) {
             board[row][col] = currentPlayer.getMarker()
 
+            // Don't update currentPlayer on victories
+            if (hasGameBeenWon()) { return }
+
             if (currentPlayer === xPlayer) {
                 currentPlayer = yPlayer
             }
@@ -257,6 +283,22 @@ function gameboardFactory(playersArray) {
                 currentPlayer = xPlayer
             }
         }
+    }
+
+    function getWinnerMarker() {
+        return currentPlayer === xPlayer ? "X" : "O"
+    }
+
+    function getAllPossibleMoves() {
+        const allMoves = []
+        for (let i = 0; i < 3; ++i) {
+            for (let j = 0; j < 3; ++j) {
+                if (board[i][j] === EMPTY_SPACE) {
+                    allMoves.push([i, j])
+                }
+            }
+        }
+        return allMoves
     }
 
     function isCellOccupied(row, col) {
@@ -277,5 +319,53 @@ function gameboardFactory(playersArray) {
         return true
     }
 
-    return { getBoard, getCurrentPlayer, hasGameBeenWon, makeMove, isCellOccupied, getCellContent, isGameTied }
+    return { getWinnerMarker, setBoard, getBoard, getCopy, getCurrentPlayer, hasGameBeenWon, makeMove, isCellOccupied, getCellContent, isGameTied }
+}
+
+function aiFactory(aiMarker) {
+    const aiPlayer = playerFactory("AI", aiMarker)
+
+    function makeMove(depth, isX) {
+
+    }
+
+    // minimax algorithm: https://en.wikipedia.org/wiki/Minimax#Pseudocode 
+    function minimax([row, col], depth, isX) {
+        const gameboardCopy = gameboard.getCopy()
+
+        if (depth === 0) {
+            if (gameboardCopy.hasGameBeenWon()) {
+                const winnerMarker = gameboardCopy.getWinnerMarker()
+                // X is the maximizing player
+                if (winnerMarker === "X") {
+                    return 1
+                }
+                return -1
+            }
+            return 0
+        }
+
+        const allMoves = gameboardCopy.getAllPossibleMoves()
+
+        if (isX) {
+            let value = -100
+            for (let i = 0; i < allMoves.length; ++i) {
+                const { potentialRow, potentialCol } = allMoves[i]
+
+                value = Math.max(value, minimax([potentialRow, potentialCol], depth - 1, false))
+            }
+            return value
+        }
+        // if O
+        let value = 100
+        for (let i = 0; i < allMoves.length; ++i) {
+            const { potentialRow, potentialCol } = allMoves[i]
+
+            value = Math.min(value, minimax([potentialRow, potentialCol], depth - 1, true))
+        }
+        return value
+
+    }
+
+    return { ...aiPlayer, }
 }

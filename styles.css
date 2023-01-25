@@ -1,6 +1,7 @@
 :root {
     --bg-color: #2c2c2c;
     --font-color: #fafafa;
+    --btn-hover-color: #373737;
 }
 
 * {
@@ -41,12 +42,35 @@ main {
     justify-content: center;
 
     gap: 10px;
+
+    text-align: center;
+    padding: 10px 40px;
 }
 
 .ai-btns-section {
     margin-top: 10px;
     display: flex;
     gap: 20px;
+}
+
+.buttons-section {
+    display: flex;
+    gap: 20px;
+}
+
+.btn {
+    font-size: 1rem;
+    padding: 10px 30px;
+
+    background-color: #5e5e5e;
+    color: var(--font-color);
+    border: none;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+    background-color: var(--btn-hover-color);
 }
 
 .ai-btns-section button {
@@ -88,6 +112,7 @@ main {
     transition: all 0.3s ease-in-out;
 
     padding: 10px 20px;
+    margin-bottom: 10px;
 }
 
 .show-btn {

@@ -30,6 +30,7 @@ function createAiForm() {
     aiButtonsSection.classList.add("ai-btns-section")
 
     const humanPlayAsX = document.createElement("button")
+    humanPlayAsX.classList.add("btn")
     humanPlayAsX.textContent = "X"
     humanPlayAsX.addEventListener("click", () => {
         handleAiForm("X")
@@ -37,6 +38,7 @@ function createAiForm() {
     aiButtonsSection.appendChild(humanPlayAsX)
 
     const humanPlayAsO = document.createElement("button")
+    humanPlayAsO.classList.add("btn")
     humanPlayAsO.textContent = "O"
     humanPlayAsO.addEventListener("click", () => {
         handleAiForm("O")
@@ -96,6 +98,7 @@ function createPlayerNamesForm() {
     const submitButton = document.createElement("button")
     submitButton.textContent = "Start Game"
     submitButton.setAttribute("type", "submit")
+    submitButton.classList.add("btn")
     submitButton.classList.add("submit-btn")
     nameForm.appendChild(submitButton)
 
@@ -130,6 +133,7 @@ function createTicTacToeBoard(playerOne, playerTwo, isAIPlaying) {
 
     const restartGameButton = document.createElement("button")
     restartGameButton.textContent = "Play Again"
+    restartGameButton.classList.add("btn")
     restartGameButton.classList.add("play-again-btn")
 
     restartGameButton.addEventListener("click", () => {
